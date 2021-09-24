@@ -1,0 +1,42 @@
+body {
+  color: cornsilk;
+}
+
+.choice-container {
+  display: flex;
+  margin: auto;
+  width: 100%;
+  background: darkgrey;
+  font-size: 50px;
+}
+
+.choice-container:hover {
+  cursor: pointer;
+  transform: scale(1.1);
+  transition: 0.2s;
+}
+
+.choice-prefix {
+  color: rgb(123, 90, 138);
+}
+.choice-text {
+  padding: 10px;
+  width: 100%;
+}
+
+.correct {
+  background: floralwhite;
+}
+
+.incorrect {
+  background: orangered;
+}
+
+#hud {
+  display: flex;
+  justify-content: space-between;
+}
+.hud-prefix {
+  text-align: center;
+  font-size: 30px;
+}
