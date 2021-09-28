@@ -8,15 +8,19 @@
     <link rel="stylesheet" href="./assets/css/style.css" />
   </head>
   <body>
-    <div class="container">
-      <div id="home" class="flex-column flex-center">
-        <h1>Start Quiz</h1>
-        <button id="play">Play</button>
-        <a href="/highscores.html" id="highsscore-btn" class="btn"
+    <header>
+      <div class="container">
+        <div id="home" class="flex-column flex-center">
+          <h1>Code Quiz</h1>
+          <button id="play">Play</button>
+          <!-- <a href="/highscores.html" id="highsscore-btn" class="btn"
           >High Scores</a
-        >
+        > -->
+          <p id="pScore"></p>
+          <p id="timer"></p>
+        </div>
       </div>
-    </div>
+    </header>
     <div class="container">
       <div id="game" class="justify-center flex-column">
         <div id="hud">
@@ -56,6 +60,12 @@
             Choice 4>
           </button>
         </div>
+      </div>
+      <div id="enterHS">
+        <p id="score"></p>
+        <label> Enter User initials</label>
+        <input id="user" type="text" />
+        <button id="saveuser">Save User Score</button>
       </div>
     </div>
     <script src="./assets/script/script.js"></script>

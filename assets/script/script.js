@@ -5,22 +5,30 @@ const btn1 = document.getElementById("button1")
 const btn2 = document.getElementById("button2")
 const btn3 = document.getElementById("button3")
 const btn4 = document.getElementById("button4")
+const enterHS = document.getElementById("enterHS")
+const scoreEl = document.getElementById("score")
+const timerEl = document.getElementById("timer")
+
+const saveuserEl = document.getElementById("saveuser")
 
 const choices = Array.from(document.querySelectorAll(".choice-text"));
 const progressText = document.querySelector("#progress-text");
 const scoreText = document.querySelector("#score");
 //const question = document.querySelector("#question");
 gameContainer.style.display = "none"
+enterHS.style.display = "none"
 let currentQuestion = {};
 let acceptingAnswers = true
 let score = 0
 let questionCounter = 0
 let availableQuestions = []
+var timerCount = 100;
+var timerObj;
 btn1.addEventListener("click", clickStart)
 btn2.addEventListener("click", clickStart)
 btn3.addEventListener("click", clickStart)
 btn4.addEventListener("click", clickStart)
-
+saveuserEl.addEventListener("click", saveuser)
 
 let questions = [
     {
@@ -70,7 +78,22 @@ playBtn.addEventListener("click", () => {
     getNewQuestion()
     gameContainer.style.display = "block"
     playBtn.style.display = "none"
+    timerObj = setInterval(() => {
+        timerEl.innerText = timerCount;
+        if(timerCount > 1){
+            timerCount--;
+        }else{
+          endQuiz()
+        }
+    }, 1000);
 })
+getItem = () => {
+    var previousDetails = localStorage.getItem("codequiz-user") || "First time user"
+    var previousscore = localStorage.getItem("codequiz-score") || "Hope you get the max score"
+    var text = `Previous Score: User + ${previousDetails} Score : ${previousscore}`
+    document.getElementById("pScore").innerText= text
+}
+getItem()
 
 getNewQuestion = () => {
     // if(availableQuestions.length === 0 || questionCounter > MAX_QUESTIONS) {
@@ -99,43 +122,61 @@ function clickStart() {
     if (userChoice == availableQuestions[questionCounter].answer){
         SCORE_POINTS += 10
     } else{
-        SCORE_POINTS -= 5
+        SCORE_POINTS -= 5;
+        timerCount--;
     }
     if (questionCounter < availableQuestions.length-1){
         questionCounter++;
         getNewQuestion()
     }else{
-        console.log(SCORE_POINTS)
-    }
+      endQuiz()
+    } 
+
 }
 
-choices.forEach(choice => {
-    choice.addEventListener("click", e => {
-        if(!acceptingAnswers) return
-
-        acceptingAnswers = false
-        const selectedChoice = e.target
-        const selectedAnswer = selectedChoice.dataset["number"]
-
-        let classToApply = selectedAnswer == currentQuestion.answer ? "correct" :
-        "incorrect"
-
-        if(classToApply === "correct") {
-            incrementScore(SCORE_POINTS)
-        }
-
-        selectedChoice.parentElement.classList.add(classToApply)
-
-        setTimeout(() => {
-            selectedChoice.parentElement.classList.remove(classToApply)
-            getNewQuestion()
-
-        }, 1000)
-    })
-})
-
-incrementScore = num => {
-    score +=num
-    scoreText.innerText = score
+function endQuiz(){
+    clearInterval(timerObj)
+    gameContainer.style.display = "none"  
+    enterHS.style.display = "block"
+    console.log(SCORE_POINTS)
+    scoreEl.innerText = "Current Score"+(SCORE_POINTS+timerCount)
 }
+function saveuser(){
+    const userEl = document.getElementById("user")
+    var user = userEl.value
+    localStorage.setItem("codequiz-user",user);
+    localStorage.setItem("codequiz-score",SCORE_POINTS)
+    location.reload()
+      
+}
+
+// choices.forEach(choice => {
+//     choice.addEventListener("click", e => {
+//         if(!acceptingAnswers) return
+
+//         acceptingAnswers = false
+//         const selectedChoice = e.target
+//         const selectedAnswer = selectedChoice.dataset["number"]
+
+//         let classToApply = selectedAnswer == currentQuestion.answer ? "correct" :
+//         "incorrect"
+
+//         if(classToApply === "correct") {
+//             incrementScore(SCORE_POINTS)
+//         }
+
+//         selectedChoice.parentElement.classList.add(classToApply)
+
+//         setTimeout(() => {
+//             selectedChoice.parentElement.classList.remove(classToApply)
+//             getNewQuestion()
+
+//         }, 1000)
+//     })
+// })
+
+// incrementScore = num => {
+//     score +=num
+//     scoreText.innerText = score
+// }
 
